@@ -7,7 +7,7 @@
  require_once('dbConnect.php');
  
  // $sql = "SELECT student_id FROM enroll_handler WHERE course_id ='".$subject_code."' AND ischecked ='1'";
- $sql = "SELECT * FROM attendance WHERE course_id='".$subject_code."' AND checkout_time IS NOT NULL";
+ $sql = "SELECT * FROM enroll_handler WHERE course_id='".$subject_code."' AND checkout_time IS NOT NULL";
 
  $res = mysqli_query($conn,$sql);
 

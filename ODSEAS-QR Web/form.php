@@ -19,7 +19,7 @@ if(!empty($_POST['Generate']))
 	$pdf -> AddPage();
 
 	// Logo
-	$pdf->Image('seas-images/logo.jpg',20,8,25);
+	$pdf->Image('ODSEAS-QR-images/logo.jpg',20,8,25);
 
 	$pdf -> Cell(8,25,"",0,1);
 	

@@ -2,7 +2,7 @@
 $servername = "localhost"; //replace it with your database server name
 $username = "root";  //replace it with your database username
 $password = "";  //replace it with your database password
-$dbname = "seas";
+$dbname = "odseas-qr";
 // Create connection
 //global $conn;
 

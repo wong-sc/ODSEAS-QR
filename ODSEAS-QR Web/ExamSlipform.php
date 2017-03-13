@@ -54,7 +54,7 @@ class PDF extends FPDF
 function Header()
 {
 	// Logo
-	$this->Image('seas-images/logo.jpg',20,25,25);
+	$this->Image('ODSEAS-QR-images/logo.jpg',20,25,25);
 	// Arial bold 15
 	$this->SetFont('Arial','B',15);
 	// Move to the right
@@ -125,7 +125,7 @@ $pdf -> Cell(8,6,"",0,0);
 $pdf -> Cell(0,6,$prog_name,0,1);
 
 //$pdf -> Image('seas-images/logo.jpg',150,60,25);
-$pdf -> Image('http://localhost/seas/seas-web/qr-code/php/qr_img.php?d='.$dataimage,150,22,45,0,'PNG');
+$pdf -> Image('http://localhost/ODSEAS-QR/ODSEAS-QR Web/qr-code/php/qr_img.php?d='.$dataimage,150,22,45,0,'PNG');
 
 $pdf -> Cell(80,10,"",0,1);
 

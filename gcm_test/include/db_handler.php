@@ -35,20 +35,25 @@ class DbHandler {
         $student_ids = (int)$student_id;
 
         // to check students' checkin or checkout time
-        $stmt = $this->conn->prepare("SELECT checkin_time FROM attendance WHERE course_id = ? AND student_id = ?");
+        $stmt = $this->conn->prepare("SELECT checkin_time FROM enroll_handler WHERE course_id = ? AND student_id = ?");
         $stmt->bind_param("si", $course_id, $student_ids);
-        $status = $stmt->execute();
-        $stmt->store_result();
+        $stmt->execute();
         $stmt->bind_result($isCheckedIn);
-        $rows = $stmt->num_rows;
-        if($rows == 0){
+        $status = $stmt->fetch();
+        $stmt->store_result();
+        // var_dump($isCheckedIn);
+        // $rows = $stmt->num_rows;
+        // var_dump($rows);
+        if($isCheckedIn == NULL){
             $stmt->close();
-            $stmt = $this->conn->prepare("INSERT INTO attendance (course_id, student_id, checkin_time) VALUES ('$course_id', '$student_id', now())");
+            $stmt = $this->conn->prepare("UPDATE enroll_handler SET checkin_time = now() WHERE student_id = ? AND course_id = ?");
+            $stmt->bind_param("is", $student_id, $course_id);
             $stmt->execute();
+            $stmt->close();
             echo "success checkin";
         } else {
             $stmt->close();
-            $stmt = $this->conn->prepare("UPDATE attendance SET checkout_time = now() WHERE student_id = ? AND course_id = ?");
+            $stmt = $this->conn->prepare("UPDATE enroll_handler SET checkout_time = now() WHERE student_id = ? AND course_id = ?");
             $stmt->bind_param("is", $student_id, $course_id);
             $stmt->execute();
             $stmt->close();
