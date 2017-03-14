@@ -1,57 +1,71 @@
 <?php
 
 require_once('dbConnect.php');
-$staff_id = $_GET['staff_id'];
 
-$getAllData = "SELECT * FROM staff WHERE staff_id = '". $staff_id ."'";
+$getStaffData = "SELECT * FROM staff";
+$getCourseHandlerData = "SELECT * FROM course_handler";
+$getCourseData = "SELECT * FROM course";
+$getVenueHandlerData = "SELECT * FROM venue_handler";
+$getVenueData = "SELECT * FROM venue";
+$getEnrollHandlerData = "SELECT * FROM enroll_handler";
+$getStudentData = "SELECT * FROM student";
 
-$rowData = mysqli_query($conn,$getAllData);
+$rawStaff = mysqli_query($conn,$getStaffData);
+$rawCourseHandler = mysqli_query($conn, $getCourseHandlerData);
+$rawCourse = mysqli_query($conn, $getCourseData);
+$rawVenueHandler = mysqli_query($conn, $getVenueHandlerData);
+$rawVenue = mysqli_query($conn, $getVenueData);
+$rawEnrollHandler = mysqli_query($conn, $getEnrollHandlerData);
+$rawStudent = mysqli_query($conn, $getStudentData);
 
 $result = array();
-$relatedStaff = array();
 
-// while($row = mysqli_fetch_array($rowData)){
-// 	$getStaffInviCourse = "SELECT * FROM course_handler WHERE staff_id = '". $row['staff_id']."'";
-// 	$rowData2 = mysqli_query($conn,$getStaffInviCourse);
-// 	while ($row2 = mysqli_fetch_array($rowData2)) {
-// 		array_push($relatedStaff, array($row2['']));
-// 	}
-	
-// }
+$staffArray = array();
+$course_handlerArray = array();
+$courseArray = array();
+$venue_handlerArray = array();
+$venueArray = array();
+$enroll_handlerArray = array();
+$studentArray = array();
 
-// $row = mysqli_fetch_array($rowData);
-// array_push($result, array('staff' => $row));
-// $i = 0;
-// while($i < count($row)){
-// 	echo count($row);
-// 	$
-// }
+//select the staff_id
+while ($row = mysqli_fetch_assoc($rawStaff)) {
+	array_push($staffArray, $row);
+}
 
- while($row = mysqli_fetch_assoc($rowData)){
- 	// array_push($result, array('staff' => $row));
-		$getStaffInviCourse = "SELECT * FROM course_handler WHERE staff_id = '". $row['staff_id']."'";
-		$rowData2 = mysqli_query($conn,$getStaffInviCourse);
-		// array_push($result, array());
-		while ($row2 = mysqli_fetch_assoc($rowData2)) {
-			$getCourse = "SELECT * FROM course WHERE course_id = '". $row2['course_id']."'";
-			$rowData3 = mysqli_query($conn, $getCourse);
-			while ($row3 = mysqli_fetch_assoc($rowData3)) {
-				$getCourseHandler = "SELECT * FROM enroll_handler WHERE course_id = '". $row3['course_id']."'";
-				$rowData4 = mysqli_query($conn, $getCourseHandler);
-				while ($row4 = mysqli_fetch_assoc($rowData4)) {
-					array_push($result, array(
-						'staff' => $row,
-						'course_handler' => $row2,
-						'course' => $row3,
-						'enroll_handler' => $row4
-						));
-				}
-			}
-		}
-	}
+while ($row2 = mysqli_fetch_assoc($rawCourseHandler)) {
+	array_push($course_handlerArray, $row2);
+}
 
- // echo json_encode(array($result));
-echo json_encode(array("result" => $result));
+while ($row3 = mysqli_fetch_assoc($rawCourse)) {
+	array_push($courseArray, $row3);
+}
+
+while ($row4 = mysqli_fetch_assoc($rawVenueHandler)) {
+	array_push($venue_handlerArray, $row4);
+}
+
+while ($row5 = mysqli_fetch_assoc($rawVenue)) {
+	array_push($venueArray, $row5);
+}
+
+while ($row6 = mysqli_fetch_assoc($rawEnrollHandler)) {
+	array_push($enroll_handlerArray, $row6);
+}
+
+while ($row7 = mysqli_fetch_assoc($rawStudent)) {
+	array_push($studentArray, $row7);
+}
+
+$result['staff'] = $staffArray;
+$result['course_handler'] = $course_handlerArray;
+$result['course'] = $courseArray;
+$result['venue_handler'] = $venue_handlerArray;
+$result['venue'] = $venueArray;
+$result['enroll_handler'] = $enroll_handlerArray;
+$result['student'] = $studentArray;
+
+echo json_encode($result);
  
  mysqli_close($conn);
 
