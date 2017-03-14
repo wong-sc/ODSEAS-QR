@@ -1,13 +1,7 @@
 <?php 
 
-// $sql = "SELECT course_id,course_name, student_number, 'date' as examDate, 'time' as examTime FROM course JOIN venue_handler ";
-
-// $sql = "SELECT course_id, course_name, student_number, exam_date, start_time, end_time, venueh.venue_name FROM course JOIN (SELECT venue_handler.venue_id as venue_IDS, venue_handler.course_id AS courseIDS, venue.venue_id, venue.venue_name FROM venue_handler JOIN venue ON venue_handler.venue_id = venue.venue_id) as venueh ON course.course_id = venueh.courseIDS";
-
-// $sql2 = "SELECT "
-
-if($_SERVER['REQUEST_METHOD']=='GET'){
-    $staff_id = $_GET['staff_id'];
+if($_SERVER['REQUEST_METHOD']=='POST'){
+    $staff_id = $_POST['staff_id'];
     $sql = "SELECT * FROM course_handler JOIN course ON course_handler.course_id = course.course_id WHERE course_handler.staff_id ='". $staff_id. "'";
 
     require_once('dbConnect.php');

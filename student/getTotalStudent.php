@@ -1,14 +1,12 @@
 <?php
 
- if($_SERVER['REQUEST_METHOD']=='GET'){
+ if($_SERVER['REQUEST_METHOD']=='POST'){
  
- $subject_code  = $_GET['subject_code'];
+ $subject_code  = $_POST['subject_code'];
  
  require_once('dbConnect.php');
  
  $sql = "SELECT student_id FROM enroll_handler WHERE course_id ='".$subject_code."'";
-
- 
  
   $res = mysqli_query($conn,$sql);
  

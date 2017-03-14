@@ -1,8 +1,8 @@
 <?php
 
- if($_SERVER['REQUEST_METHOD']=='GET'){
+ if($_SERVER['REQUEST_METHOD']=='POST'){
  
- $subject_code = $_GET['subject_code'];
+ $subject_code = $_POST['subject_code'];
  
  require_once('dbConnect.php');
  

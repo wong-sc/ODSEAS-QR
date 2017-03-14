@@ -2,7 +2,7 @@
 
 require_once('dbConnect.php');
 
-$courseCode = $_GET['subject_code'];
+$courseCode = $_POST['subject_code'];
 
 $sql = "SELECT * FROM enroll_handler WHERE course_id = '".$courseCode."' AND checkin_time IS NULL AND checkout_time IS NULL";
 

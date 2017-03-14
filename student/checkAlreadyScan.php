@@ -1,9 +1,9 @@
 <?php
 
- if($_SERVER['REQUEST_METHOD']=='GET'){
+ if($_SERVER['REQUEST_METHOD']=='POST'){
  
- $stud_id = $_GET['stud_id'];
- $subject_code = $_GET['subject_code'];
+ $stud_id = $_POST['stud_id'];
+ $subject_code = $_POST['subject_code'];
  
  require_once('dbConnect.php');
  
