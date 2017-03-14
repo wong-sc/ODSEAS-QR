@@ -5,7 +5,7 @@ require_once('dbConnect.php');
 
 $courseCode = $_POST['subject_code'];
 
-$sql = "SELECT * FROM enroll_handler WHERE course_id = '".$courseCode."' AND checkin_time IS NOT NULL AND checkout_time IS NULL";
+$sql = "SELECT * FROM enroll_handler WHERE course_id = '".$courseCode."' AND checkin_time IS NOT NULL AND checkout_time IS NULL ORDER BY student_id ASC";
 
 $r = mysqli_query($conn,$sql);
 
