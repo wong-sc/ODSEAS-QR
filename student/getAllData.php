@@ -1,10 +1,12 @@
 <?php 
 
+
+// if($_SERVER['REQUEST_METHOD']=='POST'){
 require_once('dbConnect.php');
 
 $courseCode = $_POST['subject_code'];
 
-$sql = "SELECT * FROM enroll_handler WHERE course_id = '".$courseCode."'";
+$sql = "SELECT * FROM enroll_handler WHERE course_id = '".$courseCode."' ORDER BY student_id ASC";
 
 $r = mysqli_query($conn,$sql);
 
@@ -26,5 +28,5 @@ while($row = mysqli_fetch_array($r))
 echo json_encode(array('result'=>$result));
 
 mysqli_close($conn);
-
+// }
 ?>

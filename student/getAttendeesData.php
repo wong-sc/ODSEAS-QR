@@ -1,5 +1,6 @@
 <?php 
 
+if($_SERVER['REQUEST_METHOD']=='POST'){
 require_once('dbConnect.php');
 
 $courseCode = $_POST['subject_code'];
@@ -26,5 +27,5 @@ while($row = mysqli_fetch_array($r))
 echo json_encode(array('result'=>$result));
 
 mysqli_close($conn);
-
+}
 ?>
