@@ -36,23 +36,3 @@ mysqli_close($conn);
 }
 
 ?>
-
-<!-- SELECT * FROM `course` 
-JOIN 
-(
-	SELECT 
-    venue_handler.venue_handler_id, venue_handler.venue_id, venue_handler.course_id, 
-    venue.venue_id as venueID, venue.venue_name, venue.venue_capacity 
-    FROM venue_handler 
-    JOIN venue 
-    ON venue_handler.venue_id = venue.venue_id
-) as venueH ON course.course_id = venueH.course_id
-JOIN
-(
-	SELECT
-    course_handler.staff_id, course_handler.course_id, course_handler.invigilator_position, 
-    staff.staff_id as staffID, staff.staff_name
-    FROM course_handler
-    JOIN staff
-    ON course_handler.staff_id = staff.staff_id
-) as course2 ON course.course_id = course2.course_id -->
