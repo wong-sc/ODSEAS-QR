@@ -2,9 +2,9 @@
 
 require_once('dbConnect.php');
 
- $courseCode = $_POST['subject_code'];
+ $course_id = $_POST['course_id'];
 
-$sql = "SELECT staff.staff_name,course_handler.invigilator_position FROM course_handler JOIN staff ON course_handler.staff_id = staff.staff_id WHERE course_handler.course_id = '$courseCode' ORDER BY FIELD(invigilator_position, 'CHIEF', 'INVIGILATOR')";
+$sql = "SELECT staff.staff_name,course_handler.invigilator_position FROM course_handler JOIN staff ON course_handler.staff_id = staff.staff_id WHERE course_handler.course_id = '$course_id' ORDER BY FIELD(invigilator_position, 'CHIEF', 'INVIGILATOR')";
 
 $r = mysqli_query($conn,$sql);
 

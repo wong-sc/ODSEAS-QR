@@ -2,12 +2,12 @@
 
  if($_SERVER['REQUEST_METHOD']=='POST'){
  
- $stud_id = $_POST['stud_id'];
- $subject_code = $_POST['subject_code'];
+ $student_id = $_POST['student_id'];
+ $course_id = $_POST['course_id'];
  
  require_once('dbConnect.php');
  
- $sql = "SELECT ischecked FROM enroll_handler WHERE student_id ='".$stud_id."' AND course_id ='".$subject_code."'";
+ $sql = "SELECT ischecked FROM enroll_handler WHERE student_id ='".$student_id."' AND course_id ='".$course_id."'";
 
  $res = mysqli_query($conn,$sql);
 
@@ -15,7 +15,7 @@
  
  while($row = mysqli_fetch_array($res)){
 		array_push($result,array(
-			'isScanned'=>$row['ischecked']
+			'ischecked'=>$row['ischecked']
 		));
 	}
 

@@ -2,7 +2,7 @@
 
 if($_SERVER['REQUEST_METHOD']=='POST'){
 
-	$stud_id = $_POST['stud_id'];
+	$student_id = $_POST['student_id'];
 	require_once('dbConnect.php');
 
 	// $result = array();
@@ -13,7 +13,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 
 	// return json_encode(array('result'=>$result));
 	
-	$sql = "SELECT student_name FROM student WHERE student_id ='".$stud_id."'";
+	$sql = "SELECT student_name FROM student WHERE student_id ='".$student_id."'";
 
 	$r = mysqli_query($conn,$sql);
 
@@ -21,7 +21,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 
 	while($row = mysqli_fetch_array($r)){
 		array_push($result,array(
-			'stud_name'=>$row['student_name']
+			'student_name'=>$row['student_name']
 		));
 	}
 

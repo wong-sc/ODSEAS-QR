@@ -2,11 +2,11 @@
 
  if($_SERVER['REQUEST_METHOD']=='POST'){
  
- $stud_id = $_POST['stud_id'];
+ $student_id = $_POST['student_id'];
  
  require_once('dbConnect.php');
  
- $sql = "SELECT course_id FROM enroll_handler WHERE student_id ='".$stud_id."'";
+ $sql = "SELECT course_id FROM enroll_handler WHERE student_id ='".$student_id."'";
 
  $res = mysqli_query($conn,$sql);
 
@@ -14,7 +14,7 @@
  
  while($row = mysqli_fetch_array($res)){
 		array_push($result,array(
-			'subject_code'=>$row['course_id']
+			'course_id'=>$row['course_id']
 		));
 	}
 	

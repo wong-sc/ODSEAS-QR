@@ -4,9 +4,9 @@
 // if($_SERVER['REQUEST_METHOD']=='POST'){
 require_once('dbConnect.php');
 
-$courseCode = $_POST['subject_code'];
+$course_id = $_POST['course_id'];
 
-$sql = "SELECT * FROM enroll_handler WHERE course_id = '".$courseCode."' ORDER BY student_id ASC";
+$sql = "SELECT * FROM enroll_handler WHERE course_id = '".$course_id."' ORDER BY student_id ASC";
 
 $r = mysqli_query($conn,$sql);
 
@@ -20,12 +20,12 @@ while($row = mysqli_fetch_array($r))
 	while ($row2 = mysqli_fetch_array($r2)) 
 	{
 		 array_push($result,array(
-        'matricno'=>$row['student_id'],
-        'studentname'=>$row2['student_name']));
+        'student_id'=>$row['student_id'],
+        'student_name'=>$row2['student_name']));
     }
 }
 
-echo json_encode(array('result'=>$result));
+echo json_encode($result);
 
 mysqli_close($conn);
 // }
