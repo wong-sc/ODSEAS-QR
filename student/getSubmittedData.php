@@ -24,7 +24,7 @@ while($row = mysqli_fetch_array($r))
     }
 }
 
-echo json_encode(array('result'=>$result));
+echo json_encode($result);
 
 mysqli_close($conn);
 }
