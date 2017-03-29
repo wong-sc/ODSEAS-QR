@@ -20,7 +20,7 @@
 	}
 
 // // if($result['isScanned'] == 1)
- echo json_encode(array("result"=>$result));
+ echo json_encode($result);
  
  mysqli_close($conn);
  

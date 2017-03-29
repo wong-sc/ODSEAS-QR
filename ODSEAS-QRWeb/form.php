@@ -9,8 +9,9 @@ if(!empty($_POST['Generate']))
 	//$email = $_POST['email'];
 	//$staff_id = $_POST['staff_id'];
 
-	$data = explode(" ", $_POST['subject_code']);
-	$subject_code = $data[0];
+	$data = explode(" ", $_POST['course_ids']);
+	// var_dump($_POST['course_ids']);
+	$course_id = $_POST['course_ids'];
 	
 	
 	require("fpdf/fpdf.php");
@@ -27,11 +28,11 @@ if(!empty($_POST['Generate']))
 	$pdf -> Cell(0,15,"Student Examination Attendance Report UNIMAS session 2015/2016",1,1,'C');
 
 	$pdf -> SetFont("Arial","",14);
-	$pdf -> Cell(80,15," Subject Code :",1,0);
-	$pdf -> Cell(0,15," ".$subject_code,1,1);
+	$pdf -> Cell(80,15," Course Code :",1,0);
+	$pdf -> Cell(0,15," ".$course_id,1,1);
 	
 	//search subject name query
-	$search_Query = "SELECT subject_name FROM subject_data WHERE subject_code = '$subject_code'";
+	$search_Query = "SELECT course_name FROM course WHERE course_id = '$course_id'";
 	$search_Result = mysqli_query($conn, $search_Query);
 	if($search_Result)
 	{
@@ -39,19 +40,20 @@ if(!empty($_POST['Generate']))
 		{
 			while($row = mysqli_fetch_array($search_Result))
 			{
-				$subject_name = $row['subject_name'];	
+				$course_name = $row['course_name'];	
 				//echo $stud_name;		
 			}
 		}else{
+			echo $course_id;
 			echo 'no data';
 		}
 	}
 	
-	$pdf -> Cell(80,15," Subject Name :",1,0);
-	$pdf -> Cell(0,15," ".$subject_name,1,1);
+	$pdf -> Cell(80,15," Course Name :",1,0);
+	$pdf -> Cell(0,15," ".$course_name,1,1);
 	
 	//search subject exam date
-	$search_date_Query = "SELECT subject_date FROM subject_data WHERE subject_code = '$subject_code'";
+	$search_date_Query = "SELECT exam_date, start_time, end_time FROM course WHERE course_id = '$course_id'";
 	$search_date_Result = mysqli_query($conn, $search_date_Query);
 	if($search_date_Result)
 	{
@@ -59,7 +61,9 @@ if(!empty($_POST['Generate']))
 		{
 			while($row = mysqli_fetch_array($search_date_Result))
 			{
-				$subject_date = $row['subject_date'];	
+				$exam_date = $row['exam_date'];	
+				$start_time = $row['start_time'];
+				$end_time = $row['end_time'];
 				//echo $stud_name;		
 			}
 		}else{
@@ -68,10 +72,10 @@ if(!empty($_POST['Generate']))
 	}
 	
 	$pdf -> Cell(80,15," Date :",1,0);
-	$pdf -> Cell(0,15," ".$subject_date,1,1);
+	$pdf -> Cell(0,15," ".$exam_date. "  ". $start_time . "-" . $end_time,1,1);
 	
 	//search subject exam location
-	$search_location_Query = "SELECT subject_location FROM subject_data WHERE subject_code = '$subject_code'";
+	$search_location_Query = "SELECT venue.venue_name as venue_name FROM venue JOIN venue_handler ON venue.venue_id = venue_handler.venue_id WHERE venue_handler.course_id = '$course_id'";
 	$search_location_Result = mysqli_query($conn, $search_location_Query);
 	if($search_location_Result)
 	{
@@ -79,7 +83,7 @@ if(!empty($_POST['Generate']))
 		{
 			while($row = mysqli_fetch_array($search_location_Result))
 			{
-				$subject_location = $row['subject_location'];	
+				$venue_name = $row['venue_name'];	
 				//echo $stud_name;		
 			}
 		}else{
@@ -87,11 +91,11 @@ if(!empty($_POST['Generate']))
 		}
 	}
 	
-	$pdf -> Cell(80,15," Location :",1,0);
-	$pdf -> Cell(0,15," ".$subject_location,1,1);
+	$pdf -> Cell(80,15," Venue :",1,0);
+	$pdf -> Cell(0,15," ".$venue_name,1,1);
 	
 	//search total student query
-	$search_total_query = "SELECT student_id FROM enroll_handler WHERE course_id ='".$subject_code."'";
+	$search_total_query = "SELECT student_id FROM enroll_handler WHERE course_id ='".$course_id."'";
 	$search_total_result = mysqli_query($conn,$search_total_query);
  	$total_num = mysqli_num_rows($search_total_result);
 	
@@ -99,7 +103,7 @@ if(!empty($_POST['Generate']))
 	$pdf -> Cell(0,15," ".$total_num,1,1);
 	
 	//search attendance query
-	$search_attended_query = "SELECT stduent_id FROM enroll_handler WHERE course_id ='".$subject_code."' AND ischecked ='1'";
+	$search_attended_query = "SELECT student_id FROM enroll_handler WHERE course_id ='".$course_id."' AND ischecked ='1'";
 	$search_attended_result = mysqli_query($conn,$search_attended_query);
 	$attended_num = mysqli_num_rows($search_attended_result);
 	
@@ -122,7 +126,7 @@ if(!empty($_POST['Generate']))
 	$pdf -> SetFont("Arial","",11);
 		
 	//array of student absent
-		$sql = "SELECT student_id FROM enroll_handler WHERE course_id ='".$subject_code."' AND ischecked='0'";
+		$sql = "SELECT student_id FROM enroll_handler WHERE course_id ='".$course_id."' AND ischecked='0'";
 		$res = mysqli_query($conn,$sql);
 		
 		$i = 1;
@@ -150,10 +154,9 @@ if(!empty($_POST['Generate']))
 	$pdf -> SetFont("Arial","",11);
 		
 	//array student attended
-		$sql_attended = "SELECT student_id FROM WHERE course_id ='".$subject_code."' AND ischecked ='1'";
+		$sql_attended = "SELECT student_id FROM enroll_handler WHERE course_id ='".$course_id."' AND ischecked ='1'";
 		$res_attended = mysqli_query($conn,$sql_attended);
 		 
-		
 		$j = 1;
 		while ($row = mysqli_fetch_array($res_attended)) {
 		
@@ -172,6 +175,6 @@ if(!empty($_POST['Generate']))
 		}
 		
 	
-	$pdf -> output('',$subject_code.'_Attendance_Report.pdf');
+	$pdf -> output('',$course_id.'_Attendance_Report.pdf');
 }
 ?>

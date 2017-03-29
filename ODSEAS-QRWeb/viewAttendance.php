@@ -57,7 +57,7 @@ if(isset($_SESSION["staff_id"])){
 		  <?php
 		  		$sql = "SELECT course_id,course_name FROM course";
 				$result = mysqli_query($conn,$sql);
-				echo "<select id='selectList' name='course_id' onClick='showSelected(this)'>";
+				echo "<select id='selectList' name='course_ids' onClick='showSelected(this)'>";
 				while ($row = $result->fetch_object()) {
    					echo "<option value='" . $row->course_id . "'>" . $row->course_id, ' ', $row->course_name . "</option>";
 				}

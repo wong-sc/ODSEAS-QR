@@ -28,6 +28,7 @@ $name =   implode(',',$obNm);
 	<head>
 		<link href="../../ODSEAS-QR-css/Master.css" rel= "stylesheet" type="text/css"/>
 		<link href="../../ODSEAS-QR-css/Menu.css" rel= "stylesheet" type="text/css"/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<title>SEAS Generate QR Code</title>
 		<style type="text/css">
@@ -107,6 +108,8 @@ $name =   implode(',',$obNm);
 	        function getbarcode(){
 		        var bcArray = [];
 		        var barcodeVar;
+		        var registerAll = false;
+		        var coursename;
 		        bcArray[0] = document.getElementById('stud_id').value; 
 		        console.log(bcArray);
 		        var length = document.getElementsByTagName('select').length; 
@@ -114,36 +117,65 @@ $name =   implode(',',$obNm);
 		            var e  = document.getElementById('subject_code'+i);
 		            bcArray[i] = e.options[e.selectedIndex].value;
 		        }
-				document.getElementById('selected').value = bcArray;
-		        var arraylen = bcArray.length;
-		        for(var j=0; j< arraylen; j++){
-		            if(j== 0){
-		             barcodeVar = bcArray[j];
-		            }
-		            else{
-		             barcodeVar = barcodeVar + '+' + bcArray[j];
-		            }
-		        }   
-		        document.getElementById('barcode').innerHTML = "";
-	            var elem = document.createElement("img"); 
-	            elem.setAttribute("src", "qr_img.php?d="+barcodeVar);  
-	            document.getElementById("barcode").appendChild(elem);
-				var studidP = document.createElement("p"); 
-				var node = document.createTextNode("Student ID: "+bcArray[0]);
-				studidP.appendChild(node);
-				document.getElementById("studentid").appendChild(studidP);
-				//document.getElementById("studentid").innerHTML= bcArray[0];
-				for(var j=1; j< arraylen; j++){
-					var subP = document.createElement("p"); 
-					var node = document.createTextNode("Subject "+j+": "+bcArray[j]);
-					subP.appendChild(node);
-					document.getElementById("subjects").appendChild(subP); 
-		        }
-				var generateBtn = document.createElement("input");
-				generateBtn.setAttribute("type", "submit");
-				generateBtn.setAttribute("class", "button");
-				generateBtn.setAttribute("value", "Generate Report");
-				document.getElementById("generateBtn").appendChild(generateBtn); 
+		        $.ajax({
+					  url: "validate.php",
+					  type: "get", //send it through get method
+					  data: { 
+					    barcodeValue: bcArray
+					  },
+					  success: function(response) {
+					    console.log(response);
+					    var data = JSON.parse(response);
+					    $.each(data, function(i, item) {
+					    	if(data[i].status === "fail"){
+						    	alert("Student does not register for " + data[i].course_id);
+						    	registerAll = false;
+						    	return false;
+					    	} else {
+					    		registerAll = true;
+					    	}
+						});
+						alert(registerAll);
+
+						if(registerAll){
+							
+							document.getElementById('selected').value = bcArray;
+					        var arraylen = bcArray.length;
+					        for(var j=0; j< arraylen; j++){
+					            if(j== 0){
+					             barcodeVar = bcArray[j];
+					            }
+					            else{
+					             barcodeVar = barcodeVar + '+' + bcArray[j];
+					            }
+					        }   
+					        document.getElementById('barcode').innerHTML = "";
+				            var elem = document.createElement("img"); 
+				            elem.setAttribute("src", "qr_img.php?d="+barcodeVar);  
+				            document.getElementById("barcode").appendChild(elem);
+							var studidP = document.createElement("p"); 
+							var node = document.createTextNode("Student ID: "+bcArray[0]);
+							studidP.appendChild(node);
+							document.getElementById("studentid").appendChild(studidP);
+							//document.getElementById("studentid").innerHTML= bcArray[0];
+							for(var j=1; j< arraylen; j++){
+								var subP = document.createElement("p"); 
+								var node = document.createTextNode("Subject "+j+": "+bcArray[j]);
+								subP.appendChild(node);
+								document.getElementById("subjects").appendChild(subP); 
+					        }
+							var generateBtn = document.createElement("input");
+							generateBtn.setAttribute("type", "submit");
+							generateBtn.setAttribute("class", "button");
+							generateBtn.setAttribute("value", "Generate Report");
+							document.getElementById("generateBtn").appendChild(generateBtn); 
+							}
+					    
+					  },
+					  error: function(xhr) {
+					    console.log(xhr);
+					  }
+				});
 				//document.write(barcodeVar);
 	        };
 	        function createField(){

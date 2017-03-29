@@ -27,15 +27,27 @@ $app->post('/updateIsScanned', function() use ($app) {
 });
 
 $app->post('/updateAttendanceRecord', function() use ($app){
-    verifyRequiredParams(array('student_id', 'course_id'));
+    verifyRequiredParams(array('student_id', 'course_id', 'staff_id', 'style_id'));
 
     $student_id = $app->request->post('student_id');
     $course_id = $app->request->post('course_id');
+    $staff_id = $app->request->post('staff_id');
+    $style_id = $app->request->post('style_id');
 
     $db = new DbHandler();
-    $response = $db->updateAttendanceRecord($student_id, $course_id);
+    $response = $db->updateAttendanceRecord($student_id, $course_id, $staff_id, $style_id);
 
     // echoRespnse(200, $response);
+});
+
+$app->post('/sync', function() use ($app){
+    verifyRequiredParams(array('student_data'));
+
+    $student_data = $app->request->post('student_data');
+
+    $db = new DbHandler();
+    $response = $db->syncsAttendance($student_data);
+    echo $response;
 });
  
  // User register

@@ -11,11 +11,13 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 	$result = mysqli_query($conn,$sql);
 	
 	$check = mysqli_fetch_array($result);
+	// echo "hello";
+	// echo $check['staff_id'];
 	
 	if(isset($check)){
-	echo 'Successfully Login';
+	echo json_encode(['status' => 'Successfully Login', 'staff_id' => $check['staff_id']]);
 	}else {
-	echo 'Fail to Login';
+	echo json_encode(['status' => 'Fail to Login']);
 	}
 }
 

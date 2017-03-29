@@ -9,6 +9,7 @@ $getVenueHandlerData = "SELECT * FROM venue_handler";
 $getVenueData = "SELECT * FROM venue";
 $getEnrollHandlerData = "SELECT * FROM enroll_handler";
 $getStudentData = "SELECT * FROM student";
+$getAttendanceStyle = "SELECT * FROM take_attendance_style";
 
 $rawStaff = mysqli_query($conn,$getStaffData);
 $rawCourseHandler = mysqli_query($conn, $getCourseHandlerData);
@@ -17,6 +18,7 @@ $rawVenueHandler = mysqli_query($conn, $getVenueHandlerData);
 $rawVenue = mysqli_query($conn, $getVenueData);
 $rawEnrollHandler = mysqli_query($conn, $getEnrollHandlerData);
 $rawStudent = mysqli_query($conn, $getStudentData);
+$rawStyle = mysqli_query($conn, $getAttendanceStyle);
 
 $result = array();
 
@@ -27,6 +29,7 @@ $venue_handlerArray = array();
 $venueArray = array();
 $enroll_handlerArray = array();
 $studentArray = array();
+$styleArray = array();
 
 //select the staff_id
 while ($row = mysqli_fetch_assoc($rawStaff)) {
@@ -57,6 +60,10 @@ while ($row7 = mysqli_fetch_assoc($rawStudent)) {
 	array_push($studentArray, $row7);
 }
 
+while ($row8 = mysqli_fetch_assoc($rawStyle)) {
+	array_push($styleArray, $row8);
+}
+
 $result['staff'] = $staffArray;
 $result['course_handler'] = $course_handlerArray;
 $result['course'] = $courseArray;
@@ -64,6 +71,7 @@ $result['venue_handler'] = $venue_handlerArray;
 $result['venue'] = $venueArray;
 $result['enroll_handler'] = $enroll_handlerArray;
 $result['student'] = $studentArray;
+$result['attendance_style'] = $styleArray;
 
 echo json_encode($result);
  
