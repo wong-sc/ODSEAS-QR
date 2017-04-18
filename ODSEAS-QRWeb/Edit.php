@@ -41,15 +41,20 @@ if(isset($_POST['search'])){
 	$data = getPosts();
 	
 	$search_Query = "SELECT course_id, course_name, exam_date, venue FROM course WHERE course_id = '$data[0]'";
+	// $search_Query = "SELECT course_id, course_name, exam_date FROM course WHERE course_id = '$data[0]'";
+
+	$search_Location = "SELECT venue.venue_name as venue_name FROM venue JOIN venue_handler ON venue.venue_id = venue_handler.venue_id WHERE venue_handler.course_id = '$data[0]'";
 	
 	$search_Result = mysqli_query($conn, $search_Query);
+	$search_LResult = mysqli_query($conn, $search_Location);
 	//echo $data[0];
-	if($search_Result)
+	if($search_Result && $search_LResult)
 	{
 		if(mysqli_num_rows($search_Result))
 		{
 			while($row = mysqli_fetch_array($search_Result))
 			{
+
 				$course_id = $row['course_id'];
 				$course_name = $row['course_name'];
 				$exam_date = $row['exam_date'];
@@ -133,6 +138,8 @@ if(isset($_POST['update'])){
 <link href="ODSEAS-QR-css/Master.css" rel= "stylesheet" type="text/css"/>
 <link href="ODSEAS-QR-css/Menu.css" rel= "stylesheet" type="text/css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<script src="script.js"></script>
+<script type="text/javascript">window.onload = gethidden;</script>
 <title>SEAS Edit</title>
 <style type="text/css">
 <!--
@@ -168,8 +175,33 @@ if(isset($_POST['update'])){
 		  <option value="2">Update</option>
 		  <option value="3">Delete</option>
 		</select>
-		<button onClick="showForm()">Submit</button>
+		<button type="button" onclick="showForm()">Submit</button>
 		<br>
+
+		<form action="Edit.php" method="post" id="searchForm">
+			<br>
+			<br>
+		<font size="4.5">Search Subject Information:</font>  
+			<div class="FormElement">
+				<input type="text" class="TField" required="required" name="subject_code" placeholder="Subject Code">
+				</div>
+				<input type="hidden" class="TField" name="fn0" id="fn0" value="">
+						<button name="search" type="submit">Search</button>
+				
+				<div class="FormElement">
+					<font size="4"><?php echo "Subject Code: ".$subject_code; ?></font>  
+				<br>
+					<font size="4"><?php echo "Subject Name: ".$subject_name; ?></font>
+				<br>
+					<font size="4"><?php echo "Exam Date: ".$subject_date; ?></font>
+				<br>
+					<font size="4"><?php echo "Exam Location: ".$subject_location; ?></font>
+				</div>
+				<br>
+				<br>
+
+			</form>
+
 		<form action="Edit.php" method="post" id="addForm">
 		<br>
 			<br>
@@ -193,6 +225,7 @@ if(isset($_POST['update'])){
 				</label>
 			</div>
 		</form>	
+
 		<form action="Edit.php" method="post" id="deleteForm">
 		<br>
 			<br>
@@ -212,10 +245,8 @@ if(isset($_POST['update'])){
 			<input type="hidden" class="TField" name="fn3" id="fn3" value="">
 			<button name="delete" type="submit">Delete</button>
 
-		</form>
-		
-			<br>
-			<form action="Edit.php" method="post" id="searchForm">
+
+		<form action="Edit.php" method="post" id="updateForm">
 			<br>
 			<br>
 			<font size="4.5">Search Course Information:</font>  
@@ -273,82 +304,50 @@ if(isset($_POST['update'])){
 				</div>
 				<input type="hidden" class="TField" name="fn2" id="fn2" value="">
 				<button name="update" type="submit">Update</button>
-			</form>
+		</form>
+
+		<form action="Edit.php" method="post" id="deleteForm">
+			<br>
+			<br>
+		<font size="4.5">Delete Subject:</font> 
+			<div class="FormElement">
+			<?php
+		  		$sql = "SELECT * FROM subject_data";
+				$result = mysqli_query($conn,$sql);
+				echo "<select id='selectList' name='subject_code' onClick='showSelected(this)'>";
+				while ($row = $result->fetch_object()) {
+   					echo "<option value='" . $row->subject_code . "'>" . $row->subject_code, ' ', $row->subject_name . "</option>";
+				}
+				echo "</select><br><br>"; 
+			?>
+			</div>
+			<input type="hidden" id="subject_code_delete" name="subject_code_delete" />
+			<input type="hidden" class="TField" name="fn3" id="fn3" value="">
+			<button name="delete" type="submit">Delete</button>
+
+		</form>
+		
+			<br>
 		</div>
 		<div class="Footer">
 		</div>
 	</div>
-</body>
+
 
 <script type="text/javascript">
 
-	function showSelected(thisObj)
-{
+	function showSelected(thisObj){
+	  document.getElementById('course_id_delete').value = thisObj.options[thisObj.selectedIndex].text;
+	}
+
+	function showUpdateSelected(thisObj){
+		document.getElementById('course_id_update').value = thisObj.options[thisObj.selectedIndex].text;
+	}
  
-  document.getElementById('course_id_delete').value = thisObj.options[thisObj.selectedIndex].text;
-  
-
-}
-
-	function showUpdateSelected(thisObj)
-{
- 
-  document.getElementById('course_id_update').value = thisObj.options[thisObj.selectedIndex].text;
-  
-
-}
-function showForm(){
-	var e = document.getElementById("selectForm");
-	var value = e.options[e.selectedIndex].value;
-	if(value == 0){
-		document.getElementById("addForm").style.display = "none";
-		document.getElementById("deleteForm").style.display = "none";
-		document.getElementById("searchForm").style.display = "block";
-		document.getElementById("updateForm").style.display = "none";
-		
-		document.getElementById("fn0").value = "0";
-	}
-	else if(value == 1){
-		document.getElementById("addForm").style.display = "block";
-		document.getElementById("deleteForm").style.display = "none";
-		document.getElementById("searchForm").style.display = "none";
-		document.getElementById("updateForm").style.display = "none";
-		
-		document.getElementById("fn1").value = "1";
-	}
-	else if(value == 2){
-		document.getElementById("addForm").style.display = "none";
-		document.getElementById("deleteForm").style.display = "none";
-		document.getElementById("searchForm").style.display = "none";
-		document.getElementById("updateForm").style.display = "block";
-		
-		document.getElementById("fn2").value = "2";
-	}
-	else if(value == 3){
-		document.getElementById("addForm").style.display = "none";
-		document.getElementById("deleteForm").style.display = "block";
-		document.getElementById("searchForm").style.display = "none";
-		document.getElementById("updateForm").style.display = "none";
-		
-		document.getElementById("fn3").value = "3";
-	}
-}
-	function gethidden() {
-        var fn = document.getElementById("hiddenFormName").value;
-		if(fn == 0){
-			document.getElementById("searchForm").style.display = "block";
-		}
-		else if(fn == 1){
-			document.getElementById("addForm").style.display = "block";
-		}
-		else if(fn == 2){
-			document.getElementById("updateForm").style.display = "block";
-		}
-		else if(fn == 3){
-			document.getElementById("deleteForm").style.display = "block";
-		}
-    }
-    window.onload = gethidden;
 </script>
+
+  
+
+</body>
 
 </html>
