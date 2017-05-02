@@ -49,6 +49,19 @@ $app->post('/sync', function() use ($app){
     $response = $db->syncsAttendance($student_data);
     echo $response;
 });
+
+$app->get('/test', function() use ($app){
+    verifyRequiredParams(array('id', 'course_id', 'intime', 'outtime'));
+
+    $student_data = $app->request->get('id');
+    $student_data1 = $app->request->get('course_id');
+    $student_data2 = $app->request->get('intime');
+    $student_data3 = $app->request->get('outtime');
+
+    $db = new DbHandler();
+    $response = $db->checktime($student_data, $student_data1, $student_data2, $student_data3);
+    echo $response;
+});
  
  // User register
 $app->post('/user/register', function() use ($app) {

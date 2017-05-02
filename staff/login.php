@@ -7,6 +7,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 	require_once('dbConnect.php');
 	
 	$sql = "SELECT * FROM staff WHERE staff_id = '$staff_id' AND staff_password = '$staff_password'";
+	$fetchuser = "SELECT * staff WHERE staff_id = $staff_id";
 	
 	$result = mysqli_query($conn,$sql);
 	
@@ -15,9 +16,9 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 	// echo $check['staff_id'];
 	
 	if(isset($check)){
-	echo json_encode(['status' => 'Successfully Login', 'staff_id' => $check['staff_id']]);
+		echo json_encode(['status' => 'Successfully Login', 'staff_id' => $check['staff_id'], 'staff_name' => $check['staff_name']]);
 	}else {
-	echo json_encode(['status' => 'Fail to Login']);
+		echo json_encode(['status' => 'Fail to Login']);
 	}
 }
 

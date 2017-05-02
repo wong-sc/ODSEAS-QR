@@ -99,15 +99,151 @@ class DbHandler {
             $json->student_id, 
             $json->course_id);
 
+
         if($stmt->execute()){
-            array_push($response, ["student_id" => $json->student_id, "course_id" => $json->course_id, "status" => "success"]);
+
+            if(!($json->checkin_time == "null") && !($json->checkout_time == "null")){
+                array_push($response, [
+                    "student_id" => $json->student_id, 
+                    "course_id" => $json->course_id, 
+                    "data" => $json, 
+                    "check" => 2, 
+                    "status" => "success"]);
+            }
+            else if(!($json->checkin_time == "null") && ($json->checkout_time == "null")){
+                array_push($response, [
+                    "student_id" => $json->student_id, 
+                    "course_id" => $json->course_id, 
+                    "data" => $json, 
+                    "check" => 1, 
+                    "status" => "success"]);
+            }
+            else {
+                array_push($response, [
+                    "student_id" => $json->student_id, 
+                    "course_id" => $json->course_id, 
+                    "data" => $json, 
+                    "check" => 0, 
+                    "status" => "success"]);
+            }
         }
+    
         else {
             array_push($response, ["status" => "fail"]);
         }
         $stmt->close();
         }    
         return json_encode($response);
+    }
+
+    public function checktime($stud_id, $subject_code, $checkinTime, $checkoutTime){
+
+        $response = array();
+
+        $stmt = $this->conn->prepare("
+            SELECT checkin_time, checkout_time FROM enroll_handler 
+            WHERE student_id = ? AND course_id = ?");
+        var_dump($checkinTime . "   " . $checkoutTime);
+        $stmt->bind_param("ss", $stud_id, $subject_code);
+        $stmt->execute();
+        $stmt->bind_result($checkin_time, $checkout_time);
+        $stmt->fetch();
+
+        var_dump($checkin_time . "   " . $checkout_time);
+        var_dump(empty($checkin_time));
+        $oriCheckOutTime = date_parse($checkout_time);
+        var_dump($oriCheckOutTime ? "yes" : "no");
+
+        if(!empty($checkin_time) && !empty($checkout_time)){
+            if(!($checkinTime == "null") && !($checkoutTime == "null")){
+
+                $oriCheckInTime = new DateTime($checkin_time);
+                $oriCheckOutTime = new DateTime($checkout_time);
+
+                $repInTime = new DateTime($checkinTime);
+                $repOutTime = new DateTime($checkoutTime);
+
+                if(($oriCheckInTime < $repInTime) && (($oriCheckOutTime < $repOutTime)))
+                    return json_encode(array('status' => 1, 'message' => 'time remain unchanged'));
+
+                elseif(($oriCheckInTime > $repInTime) && (($oriCheckOutTime < $repOutTime)))
+                    return json_encode(array('status' => 2, 'message' => 'change ori checkin time'));
+
+                elseif(($oriCheckInTime < $repInTime) && (($oriCheckOutTime > $repOutTime)))
+                    return json_encode(array('status' => 3, 'message' => 'change ori checkout time'));
+
+                elseif(($oriCheckInTime > $repInTime) && (($oriCheckOutTime > $repOutTime)))
+                    return json_encode(array('status' => 4, 'message' => 'change both check-in and check-out time'));
+
+                else return "Error";
+
+            } elseif(!($checkinTime == "null") && ($checkoutTime == "null")){
+                
+                $oriCheckInTime = new DateTime($checkin_time);
+                $repInTime = new DateTime($checkinTime);
+
+                if($oriCheckInTime < $repInTime)
+                    return json_encode(array('status' => 5, 'message' => 'checkout not present, time remain unchanged'));
+
+                elseif(($oriCheckInTime > $repInTime) && (($oriCheckOutTime < $repOutTime)))
+                    return json_encode(array('status' => 2, 'message' => 'change ori checkin time'));
+
+                if($oriCheckInTime > $repInTime)
+                    array_push($response, $repInTime);
+
+                array_push($response, $repOutTime);
+
+                return json_encode(array('result' => $response, 'status' => 2));
+            }
+           
+
+        } elseif (!($checkinTime == "null") && ($checkoutTime == "null") && !empty($checkin_time) && empty($checkout_time)) {
+            
+            $oriCheckInTime = new DateTime($checkin_time);
+            $repInTime = new DateTime($checkinTime);
+
+            if($oriCheckInTime < $repInTime)
+                array_push($response, $oriCheckInTime);
+
+            if($oriCheckInTime > $repInTime)
+                array_push($response, $repInTime);
+
+            return json_encode(array('result' => $response, 'status' => 1));
+
+        } else {
+            return json_encode(array('result' => $response, 'status' => 0));
+        }
+        
+            
+
+        //     if()
+                
+        //     }
+        //     else if(!($json->checkin_time == "null") && ($json->checkout_time == "null")){
+        //         array_push($response, [
+        //             "student_id" => $json->student_id, 
+        //             "course_id" => $json->course_id, 
+        //             "data" => $json, 
+        //             "check" => 1, 
+        //             "status" => "success"]);
+        //     }
+        //     else {
+        //         array_push($response, [
+        //             "student_id" => $json->student_id, 
+        //             "course_id" => $json->course_id, 
+        //             "data" => $json, 
+        //             "check" => 0, 
+        //             "status" => "success"]);
+        //     }
+
+        // $oriCheckInTime = new DateTime($checkin_time);
+        // $oriCheckOutTime = new DateTime($checkout_time);
+
+        // $repInTime = new DateTime($checkinTime);
+        // $repOutTime = new DateTime($checkoutTime);
+
+        // if($oriCheckInTime < $repInTime)
+
     }
 
 	
