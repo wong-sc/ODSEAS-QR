@@ -62,11 +62,11 @@ function Header()
 	// Title
 	$this -> Cell(8,19,"",0,1);
 	$this -> Cell(40,8,"",0,0);
-	$this->Cell(30,8,'MID-TERM EXAMINATION SLIP',0,1);
+	$this->Cell(30,8,'FINAL EXAMINATION SLIP',0,1);
 	$this->SetFont('Arial','b',12);
 	//$this -> Cell(30,8,"",1,1);
 	$this -> Cell(40,8,"",0,0);
-	$this->Cell(30,8,'SEMESTER 2, 2015/2016 SESSION',0,1);
+	$this->Cell(30,8,'SEMESTER 2, SESSION 2016/2017 ',0,1);
 	// Line break
 	$this->Ln(10);
 }

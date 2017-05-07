@@ -24,8 +24,8 @@ if(!empty($_POST['Generate']))
 
 	$pdf -> Cell(8,25,"",0,1);
 	
-	$pdf -> SetFont("Arial","B",16);
-	$pdf -> Cell(0,15,"Student Examination Attendance Report UNIMAS session 2015/2016",1,1,'C');
+	$pdf -> SetFont("Arial","B",14);
+	$pdf -> Cell(0,15,"UNIMAS Student Examination Attendance Report Semester 2, Session 2016/2017",1,1,'C');
 
 	$pdf -> SetFont("Arial","",14);
 	$pdf -> Cell(80,15," Course Code :",1,0);
@@ -115,7 +115,7 @@ if(!empty($_POST['Generate']))
 	//percentage in two decimal places
 	$percen_two_decimal = number_format($percentage,2,'.','');
 	
-	$pdf -> Cell(80,15," Percentage of attendance :",1,0);
+	$pdf -> Cell(80,15," Percentage of Attendance :",1,0);
 	$pdf -> Cell(0,15," ".$percen_two_decimal."%",1,1);
 	
 	//calculate number of absentee

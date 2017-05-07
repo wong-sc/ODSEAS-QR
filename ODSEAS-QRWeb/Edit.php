@@ -8,17 +8,17 @@ if(isset($_SESSION["staff_id"])){
 	header('Location: Login.php');
 }
 
-$subject_code = "";
-$subject_name = "";
-$subject_date = "";
-$subject_location = "";
+$course_id = "";
+$course_name = "";
+$exam_date = "";
+$venue = "";
 
 function getPosts(){
 	$posts = array();
-	$posts[0] = $_POST['subject_code'];
-	$posts[1] = $_POST['subject_name'];
-	$posts[2] = $_POST['subject_date'];
-	$posts[3] = $_POST['subject_location'];
+	$posts[0] = $_POST['course_id'];
+	$posts[1] = $_POST['course_name'];
+	$posts[2] = $_POST['exam_date'];
+	$posts[3] = $_POST['venue'];
 	return $posts;
 }
 if(isset($_POST['fn0'])){
@@ -40,7 +40,7 @@ if(isset($_POST['search'])){
 //echo "you at search?";
 	$data = getPosts();
 	
-	$search_Query = "SELECT subject_code, subject_name, subject_date, subject_location FROM subject_data WHERE subject_code = '$data[0]'";
+	$search_Query = "SELECT course_id, course_name, exam_date, venue FROM course WHERE course_id = '$data[0]'";
 	
 	$search_Result = mysqli_query($conn, $search_Query);
 	//echo $data[0];
@@ -50,13 +50,13 @@ if(isset($_POST['search'])){
 		{
 			while($row = mysqli_fetch_array($search_Result))
 			{
-				$subject_code = $row['subject_code'];
-				$subject_name = $row['subject_name'];
-				$subject_date = $row['subject_date'];
-				$subject_location = $row['subject_location'];
+				$course_id = $row['course_id'];
+				$course_name = $row['course_name'];
+				$exam_date = $row['exam_date'];
+				$venue = $row['venue'];
 			}
 		}else {
-			echo 'no data for this subject code';
+			echo 'no data for this course';
 		}
 	}else {
 		echo 'Result error';
@@ -65,7 +65,7 @@ if(isset($_POST['search'])){
 
 if(isset($_POST['insert'])){
 	$data = getPosts();
-	$insert_Query = "INSERT INTO `subject_data`(`subject_code`, `subject_name`, `subject_date`, `subject_location`) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
+	$insert_Query = "INSERT INTO `course`(`course_id`, `course_name`, `exam_date`, `venue`) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
 	try{
 		$insert_Result = mysqli_query($conn, $insert_Query);
 		
@@ -86,7 +86,7 @@ if(isset($_POST['insert'])){
 if(isset($_POST['delete'])){
 //echo 'are you here';
 	$data = getPosts();
-	$delete_Query = "DELETE FROM `subject_data` WHERE `subject_code` = '$data[0]'";
+	$delete_Query = "DELETE FROM `course` WHERE `course_id` = '$data[0]'";
 	try{
 		$delete_Result = mysqli_query($conn, $delete_Query);
 		
@@ -107,7 +107,7 @@ if(isset($_POST['delete'])){
 if(isset($_POST['update'])){
 //echo 'are you here';
 	$data = getPosts();
-	$update_Query = "UPDATE `subject_data` SET `subject_code`='$data[0]',`subject_name`='$data[1]',`subject_date`='$data[2]',`subject_location`='$data[3]' WHERE `subject_code` = '$data[0]'";
+	$update_Query = "UPDATE `course` SET `course_id`='$data[0]',`course_name`='$data[1]',`exam_date`='$data[2]',`venue`='$data[3]' WHERE `course_id` = '$data[0]'";
 	try{
 		$update_Result = mysqli_query($conn, $update_Query);
 		
@@ -173,18 +173,18 @@ if(isset($_POST['update'])){
 		<form action="Edit.php" method="post" id="addForm">
 		<br>
 			<br>
-		<font size="4.5">Add new subject:</font>  
+		<font size="4.5">Add new course:</font>  
 			<div class="FormElement">
-				<input type="text" required="required" class="TField" name="subject_code" placeholder="Subject Code" >
+				<input type="text" required="required" class="TField" name="course_id" placeholder="Course Code" >
 			</div>
 			<div class="FormElement">
-				<input type="text" required="required" class="TField" name="subject_name" placeholder="Subject Name" >
+				<input type="text" required="required" class="TField" name="course_name" placeholder="Course Name" >
 			</div>
 			<div class="FormElement">
-				<input type="text" required="required" class="TField" name="subject_date" placeholder="Exam Date Eg. 2016-01-01" >
+				<input type="text" required="required" class="TField" name="exam_date" placeholder="Exam Date Eg. 2016-01-01" >
 			</div>
 			<div class="FormElement">
-				<input type="text" required="required" class="TField" name="subject_location" placeholder="Exam Location" >
+				<input type="text" required="required" class="TField" name="venue" placeholder="Venue" >
 			</div>
 			<input type="hidden" class="TField" name="fn1" id="fn1" value="">
 			<div class="FormElement">
@@ -196,19 +196,19 @@ if(isset($_POST['update'])){
 		<form action="Edit.php" method="post" id="deleteForm">
 		<br>
 			<br>
-		<font size="4.5">Delete Subject:</font> 
+		<font size="4.5">Delete Course:</font> 
 			<div class="FormElement">
 			<?php
-		  		$sql = "SELECT * FROM subject_data";
+		  		$sql = "SELECT * FROM course";
 				$result = mysqli_query($conn,$sql);
-				echo "<select id='selectList' name='subject_code' onClick='showSelected(this)'>";
+				echo "<select id='selectList' name='course_id' onClick='showSelected(this)'>";
 				while ($row = $result->fetch_object()) {
-   					echo "<option value='" . $row->subject_code . "'>" . $row->subject_code, ' ', $row->subject_name . "</option>";
+   					echo "<option value='" . $row->course_id . "'>" . $row->course_id, ' ', $row->course_name . "</option>";
 				}
 				echo "</select><br><br>"; 
 			?>
 			</div>
-			<input type="hidden" id="subject_code_delete" name="subject_code_delete" />
+			<input type="hidden" id="course_id_delete" name="course_id_delete" />
 			<input type="hidden" class="TField" name="fn3" id="fn3" value="">
 			<button name="delete" type="submit">Delete</button>
 
@@ -218,21 +218,21 @@ if(isset($_POST['update'])){
 			<form action="Edit.php" method="post" id="searchForm">
 			<br>
 			<br>
-			<font size="4.5">Search Subject Information:</font>  
+			<font size="4.5">Search Course Information:</font>  
 				<div class="FormElement">
-					<input type="text" class="TField" required="required" name="subject_code" placeholder="Subject Code">
+					<input type="text" class="TField" required="required" name="course_id" placeholder="Course Code">
 				</div>
 				<input type="hidden" class="TField" name="fn0" id="fn0" value="">
 						<button name="search" type="submit">Search</button>
 				
 				<div class="FormElement">
-					<font size="4"><?php echo "Subject Code: ".$subject_code; ?></font>  
+					<font size="4"><?php echo "Course Code: ".$course_id; ?></font>  
 				<br>
-					<font size="4"><?php echo "Subject Name: ".$subject_name; ?></font>
+					<font size="4"><?php echo "Course Name: ".$course_name; ?></font>
 				<br>
-					<font size="4"><?php echo "Exam Date: ".$subject_date; ?></font>
+					<font size="4"><?php echo "Exam Date: ".$exam_date; ?></font>
 				<br>
-					<font size="4"><?php echo "Exam Location: ".$subject_location; ?></font>
+					<font size="4"><?php echo "Venue: ".$venue; ?></font>
 				</div>
 				<br>
 				
@@ -243,33 +243,33 @@ if(isset($_POST['update'])){
 			<form action="Edit.php" method="post" id="updateForm">
 			<br>
 			<br>
-			<font size="4.5">Update Subject:</font> 
+			<font size="4.5">Update Course:</font> 
 			
 				<div class="FormElement">
 				<?php
-					$sql = "SELECT * FROM subject_data";
+					$sql = "SELECT * FROM course";
 					$result = mysqli_query($conn,$sql);
-					echo "<select id='selectList' name='subject_code' onClick='showUpdateSelected(this)'>";
+					echo "<select id='selectList' name='course_id' onClick='showUpdateSelected(this)'>";
 					while ($row = $result->fetch_object()) {
-						echo "<option value='" . $row->subject_code . "'>" . $row->subject_code, ' ', $row->subject_name . "</option>";
+						echo "<option value='" . $row->course_id . "'>" . $row->course_id, ' ', $row->course_name . "</option>";
 					}
 					echo "</select><br><br>"; 
 				?>
 				</div>
-				<input type="hidden" id="subject_code_update" name="subject_code_update" />
+				<input type="hidden" id="course_id_update" name="course_id_update" />
 				
 				<button name="search" type="submit">Choose</button>
 				<div class="FormElement">
-					<input type="text" class="TField" name="subject_code_update" placeholder="Subject Code" value="<?php echo $subject_code; ?>">
+					<input type="text" class="TField" name="course_id_update" placeholder="Course Code" value="<?php echo $course_id; ?>">
 				</div>
 				<div class="FormElement">
-					<input type="text" class="TField" name="subject_name" placeholder="Subject Name" value="<?php echo $subject_name; ?>">
+					<input type="text" class="TField" name="course_name" placeholder="Course Name" value="<?php echo $course_name; ?>">
 				</div>
 				<div class="FormElement">
-					<input type="text" class="TField" name="subject_date" placeholder="Exam Date Eg. 2016-01-01" value="<?php echo $subject_date; ?>">
+					<input type="text" class="TField" name="exam_date" placeholder="Exam Date Eg. 2016-01-01" value="<?php echo $exam_date; ?>">
 				</div>
 				<div class="FormElement">
-					<input type="text" class="TField" name="subject_location" placeholder="Exam Location" value="<?php echo $subject_location; ?>">
+					<input type="text" class="TField" name="venue" placeholder="Exam Location" value="<?php echo $venue; ?>">
 				</div>
 				<input type="hidden" class="TField" name="fn2" id="fn2" value="">
 				<button name="update" type="submit">Update</button>
@@ -285,7 +285,7 @@ if(isset($_POST['update'])){
 	function showSelected(thisObj)
 {
  
-  document.getElementById('subject_code_delete').value = thisObj.options[thisObj.selectedIndex].text;
+  document.getElementById('course_id_delete').value = thisObj.options[thisObj.selectedIndex].text;
   
 
 }
@@ -293,7 +293,7 @@ if(isset($_POST['update'])){
 	function showUpdateSelected(thisObj)
 {
  
-  document.getElementById('subject_code_update').value = thisObj.options[thisObj.selectedIndex].text;
+  document.getElementById('course_id_update').value = thisObj.options[thisObj.selectedIndex].text;
   
 
 }

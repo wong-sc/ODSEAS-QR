@@ -64,7 +64,7 @@ $name =   implode(',',$obNm);
 						<input name="stud_id" type="text" class="TField" id="stud_id" placeholder= "Student ID" />
 					</div>
 					<div class="FormElement">
-						<input name='numSub' type='number' class="TField" id='numSub'placeholder= "Number of Subjects Taken (max=10)" min='1' max='10' />
+						<input name='numSub' type='number' class="TField" id='numSub'placeholder= "Number of Courses Taken (max=10)" min='1' max='10' />
 					</div>
 					<div class="FormElement">
 						<label>
@@ -160,7 +160,7 @@ $name =   implode(',',$obNm);
 							//document.getElementById("studentid").innerHTML= bcArray[0];
 							for(var j=1; j< arraylen; j++){
 								var subP = document.createElement("p"); 
-								var node = document.createTextNode("Subject "+j+": "+bcArray[j]);
+								var node = document.createTextNode("Course "+j+": "+bcArray[j]);
 								subP.appendChild(node);
 								document.getElementById("subjects").appendChild(subP); 
 					        }
@@ -184,7 +184,7 @@ $name =   implode(',',$obNm);
 	            document.getElementById('dynamicDiv').innerHTML = "";
 	            var loop = document.getElementById('numSub').value;
 				if(loop >10){
-					alert('Subject number cannot be more than 10.');
+					alert('Course number cannot be more than 10.');
 				}
 				else{
 	            var codeArr = document.getElementById('codeid').value.split(",");
