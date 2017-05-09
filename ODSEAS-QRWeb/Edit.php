@@ -39,10 +39,17 @@ else{
 if(isset($_POST['search'])){
 //echo "you at search?";
 	$data = getPosts();
+	echo($data[0]);
 	
-	$search_Query = "SELECT course_id, course_name, exam_date, venue FROM course WHERE course_id = '$data[0]'";
+	$search_Query = "SELECT 
+						course.course_id, course.course_name, exam_date, venue.venue_name 
+						FROM course JOIN venue_handler ON course.course_id = venue_handler.course_id 
+						JOIN (SELECT venue.venue_name, venue.venue_id FROM venue 
+						JOIN venue_handler ON venue_handler.venue_id = venue.venue_id) as venue 
+						ON venue.venue_id = venue_handler.venue_id WHERE course.course_id = '$data[0]'";
 	
 	$search_Result = mysqli_query($conn, $search_Query);
+	var_dump(mysqli_fetch_array($search_Result));
 	//echo $data[0];
 	if($search_Result)
 	{

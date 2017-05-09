@@ -7,9 +7,9 @@ require 'Connection/Connections.php';
 		session_start();
 		$staff_id = $_POST['staff_id'];
 		$staff_password = $_POST['staff_password'];
-		$staff_email = $_POST['staff_email'];
+		$staff_name = $_POST['staff_name'];
 	
-		$sql = $conn -> query("INSERT INTO staff_data (staff_id,staff_password,staff_email) VALUES ('$staff_id','$staff_password','$staff_email')");
+		$sql = $conn -> query("INSERT INTO staff (staff_id,staff_password,staff_name) VALUES ('$staff_id','$staff_password','$staff_name')");
 		
 		header('Location: Login.php');
 	}
@@ -59,7 +59,7 @@ require 'Connection/Connections.php';
 				</div>
 				
 				<div class="FormElement">
-				  <input name="staff_email" type="text" required="required" class="TField" id="staff_email" placeholder= "Email"/>
+				  <input name="staff_name" type="text" required="required" class="TField" id="staff_email" placeholder= "Name"/>
 				</div>
 				<div class="FormElement">
 				  <input name="staff_password" type="password" required="required" class="TField" id="staff_password" placeholder= "Password"/>
