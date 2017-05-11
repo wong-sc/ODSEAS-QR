@@ -135,7 +135,7 @@ $name =   implode(',',$obNm);
 					    		registerAll = true;
 					    	}
 						});
-						alert(registerAll);
+						// alert(registerAll);
 
 						if(registerAll){
 							
