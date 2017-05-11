@@ -49,7 +49,7 @@ if(isset($_POST['search'])){
 						ON venue.venue_id = venue_handler.venue_id WHERE course.course_id = '$data[0]'";
 	
 	$search_Result = mysqli_query($conn, $search_Query);
-	var_dump(mysqli_fetch_array($search_Result));
+	// var_dump(mysqli_fetch_array($search_Result));
 	//echo $data[0];
 	if($search_Result)
 	{
@@ -57,10 +57,11 @@ if(isset($_POST['search'])){
 		{
 			while($row = mysqli_fetch_array($search_Result))
 			{
+				var_dump(mysqli_fetch_array($row));
 				$course_id = $row['course_id'];
 				$course_name = $row['course_name'];
 				$exam_date = $row['exam_date'];
-				$venue = $row['venue'];
+				$venue = $row['venue_name'];
 			}
 		}else {
 			echo 'no data for this course';
