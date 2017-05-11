@@ -39,14 +39,17 @@ else{
 if(isset($_POST['search'])){
 //echo "you at search?";
 	$data = getPosts();
+	echo($data[0]);
 	
-	$search_Query = "SELECT course_id, course_name, exam_date, venue FROM course WHERE course_id = '$data[0]'";
-	// $search_Query = "SELECT course_id, course_name, exam_date FROM course WHERE course_id = '$data[0]'";
-
-	$search_Location = "SELECT venue.venue_name as venue_name FROM venue JOIN venue_handler ON venue.venue_id = venue_handler.venue_id WHERE venue_handler.course_id = '$data[0]'";
+	$search_Query = "SELECT 
+						course.course_id, course.course_name, exam_date, venue.venue_name 
+						FROM course JOIN venue_handler ON course.course_id = venue_handler.course_id 
+						JOIN (SELECT venue.venue_name, venue.venue_id FROM venue 
+						JOIN venue_handler ON venue_handler.venue_id = venue.venue_id) as venue 
+						ON venue.venue_id = venue_handler.venue_id WHERE course.course_id = '$data[0]'";
 	
 	$search_Result = mysqli_query($conn, $search_Query);
-	$search_LResult = mysqli_query($conn, $search_Location);
+	// var_dump(mysqli_fetch_array($search_Result));
 	//echo $data[0];
 	if($search_Result && $search_LResult)
 	{
@@ -54,11 +57,10 @@ if(isset($_POST['search'])){
 		{
 			while($row = mysqli_fetch_array($search_Result))
 			{
-
 				$course_id = $row['course_id'];
 				$course_name = $row['course_name'];
 				$exam_date = $row['exam_date'];
-				$venue = $row['venue'];
+				$venue = $row['venue_name'];
 			}
 		}else {
 			echo 'no data for this course';
