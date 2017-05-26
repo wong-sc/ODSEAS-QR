@@ -21,7 +21,7 @@ body {
 }
 .FormElement { width:350px; margin:6px auto; height:40px;}
 .TField { width:350px; height:35px; border:1px solid #E0DFDF; padding-left:6px; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:17px;}
-.button { width:200px; height:50px; border:0px solid; background-color:#003399; color:#FFFFFF; font-size:24px;}
+.button { width:auto; height:50px; border:0px solid; background-color:#003399; color:#FFFFFF; font-size:24px;}
 .button:hover { background-color:rgba(26,8,114,1.00); color:#FFFFFF;}
 .Footer { height:100px; }
 

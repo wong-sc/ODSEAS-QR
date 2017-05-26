@@ -30,7 +30,7 @@ $name =   implode(',',$obNm);
 		<link href="../../ODSEAS-QR-css/Menu.css" rel= "stylesheet" type="text/css"/>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<title>SEAS Generate QR Code</title>
+		<title>ODSEAS-QR Generate QR Code</title>
 		<style type="text/css">
 		<!--
 		.style1 {font-size: 72px}
@@ -49,7 +49,7 @@ $name =   implode(',',$obNm);
 						<ul class="cssmenu">
 			
 						  <li><a href="../../viewAttendance.php">View Attendance</a></li>	
-						  <li><a href="../../Edit.php">Edit SEAS</a></li>	
+						  <li><a href="../../Edit.php">Edit Course</a></li>	
 	  	    		  	  <li><a href="#">Generate QR Code *</a></li>	
 						  <li><a href="../../Logout.php">Logout</a></li>
 	  	    
@@ -167,7 +167,7 @@ $name =   implode(',',$obNm);
 							var generateBtn = document.createElement("input");
 							generateBtn.setAttribute("type", "submit");
 							generateBtn.setAttribute("class", "button");
-							generateBtn.setAttribute("value", "Generate Report");
+							generateBtn.setAttribute("value", "Generate Exam Slip");
 							document.getElementById("generateBtn").appendChild(generateBtn); 
 							}
 					    
