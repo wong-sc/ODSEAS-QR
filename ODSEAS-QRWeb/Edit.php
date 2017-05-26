@@ -162,7 +162,7 @@ if(isset($_POST['update'])){
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <script src="script.js"></script>
 <script type="text/javascript">window.onload = gethidden;</script>
-<title>SEAS Edit</title>
+<title>ODSEAS-QR Edit Course</title>
 <style type="text/css">
 <!--
 .style1 {font-size: 72px}
@@ -181,7 +181,7 @@ if(isset($_POST['update'])){
 					<ul class="cssmenu">
 		
 					  <li><a href="viewAttendance.php">View Attendance</a></li>	
-					  <li><a href="#">Edit SEAS *</a></li>	
+					  <li><a href="#">Edit Course *</a></li>	
   	    		  	  <li><a href="qr-code/php/index.php">Generate QR Code</a></li>	
 					  <li><a href="Logout.php">Logout</a></li>
   	    

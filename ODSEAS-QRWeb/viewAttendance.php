@@ -17,7 +17,7 @@ if(isset($_SESSION["staff_id"])){
 <link href="ODSEAS-QR-css/Master.css" rel= "stylesheet" type="text/css"/>
 <link href="ODSEAS-QR-css/Menu.css" rel= "stylesheet" type="text/css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>SEAS View Attendance</title>
+<title>ODSEAS-QR View Attendance</title>
 <style type="text/css">
 <!--
 .style1 {font-size: 72px}
@@ -36,7 +36,7 @@ if(isset($_SESSION["staff_id"])){
 					<ul class="cssmenu">
 		
 					  <li><a href="#">View Attendance *</a></li>	
-					  <li><a href="Edit.php">Edit SEAS</a></li>	
+					  <li><a href="Edit.php">Edit Course</a></li>	
   	    		  	  <li><a href="qr-code/php/index.php">Generate QR Code</a></li>	
 					  <li><a href="Logout.php">Logout</a></li>
   	    

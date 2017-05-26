@@ -25,7 +25,7 @@
 <link href="ODSEAS-QR-css/Master.css" rel= "stylesheet" type="text/css"/>
 <link href="ODSEAS-QR-css/Menu.css" rel= "stylesheet" type="text/css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>SEAS Login</title>
+<title>ODSEAS-QR Login</title>
 <style type="text/css">
 <!--
 .style1 {font-size: 72px}
